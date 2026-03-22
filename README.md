@@ -2,15 +2,16 @@
 
 一款功能完善的家庭菜谱管理应用，支持菜品图片管理、结构化菜谱编辑、营养成分计算、每日菜单规划等功能。
 
-![React](https://img.shields.io/badge/React-18-blue?logo=react)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
-![Node.js](https://img.shields.io/badge/Node.js-18+-green?logo=node.js)
-![SQLite](https://img.shields.io/badge/SQLite-数据库-blue?logo=sqlite)
-![Docker](https://img.shields.io/badge/Docker-支持-blue?logo=docker)
+!\[React]\(<https://img.shields.io/badge/React-18-blue?logo=react> null)
+!\[TypeScript]\(<https://img.shields.io/badge/TypeScript-5-blue?logo=typescript> null)
+!\[Node.js]\(<https://img.shields.io/badge/Node.js-18+-green?logo=node.js> null)
+!\[SQLite]\(<https://img.shields.io/badge/SQLite-数据库-blue?logo=sqlite> null)
+!\[Docker]\(<https://img.shields.io/badge/Docker-支持-blue?logo=docker> null)
 
 ## ✨ 功能特性
 
 ### 🍳 核心功能
+
 - **菜谱管理** - 创建、编辑、删除、查看菜谱，支持富文本步骤
 - **图片处理** - 图片上传、裁剪、压缩、预览
 - **营养计算** - 基于中国食物成分表自动计算营养成分
@@ -20,11 +21,13 @@
 - **评分系统** - 为菜谱评分
 
 ### 🔐 用户系统
+
 - **用户注册/登录** - 安全的身份认证
 - **个人中心** - 管理个人菜谱和收藏
 - **管理员功能** - 营养数据管理
 
 ### 📱 技术特性
+
 - **响应式设计** - 完美适配移动端和桌面端
 - **安全认证** - JWT Token + bcrypt 密码加密
 - **请求限流** - 防止暴力破解和滥用
@@ -33,17 +36,17 @@
 
 ## 🛠 技术栈
 
-| 层级 | 技术 |
-|------|------|
-| 前端框架 | React 18 + TypeScript |
-| 样式方案 | Tailwind CSS |
-| 状态管理 | React Context |
-| 路由管理 | React Router v6 |
-| 后端框架 | Express.js |
-| 数据库 | SQLite (sql.js) |
-| 认证方案 | JWT + bcrypt |
-| 构建工具 | Vite |
-| 容器化 | Docker + Docker Compose |
+| 层级   | 技术                      |
+| ---- | ----------------------- |
+| 前端框架 | React 18 + TypeScript   |
+| 样式方案 | Tailwind CSS            |
+| 状态管理 | React Context           |
+| 路由管理 | React Router v6         |
+| 后端框架 | Express.js              |
+| 数据库  | SQLite (sql.js)         |
+| 认证方案 | JWT + bcrypt            |
+| 构建工具 | Vite                    |
+| 容器化  | Docker + Docker Compose |
 
 ## 📁 项目结构
 
@@ -69,8 +72,10 @@ xcook/
 └── .env.example                # 环境变量模板
 ```
 
-----
+***
+
 ## 项目预览
+
 <img width="1718" height="771" alt="Snipaste_2026-03-22_21-52-48" src="https://github.com/user-attachments/assets/78b55949-f9e4-44ab-a78f-e61c1e90bb17" />
 
 <img width="1654" height="1202" alt="Snipaste_2026-03-22_21-53-20" src="https://github.com/user-attachments/assets/96a76852-1f3b-468b-ab6b-3d418bf13cb7" />
@@ -84,7 +89,7 @@ xcook/
 
 <img width="516" height="1135" alt="image" src="https://github.com/user-attachments/assets/be5f20e9-8360-4e59-b8f3-6b0fb908c82f" />
 
----
+***
 
 ## 🚀 部署指南
 
@@ -93,9 +98,9 @@ xcook/
 - Docker 20.10+
 - Docker Compose 2.0+（可选）
 
----
+***
 
-### ⭐ 方式一：Docker Hub 一键部署（推荐）
+### ⭐ 方式一：Docker Hub 一键部署（暂时未推送Docker Hub）
 
 最简单的方式，无需克隆代码，直接从 Docker Hub 拉取镜像运行：
 
@@ -136,15 +141,15 @@ docker-compose up -d
 
 **部署参数说明：**
 
-| 参数 | 说明 | 默认值 |
-|------|------|--------|
-| `-p 3000:3000` | 端口映射 | 3000:3000 |
-| `ADMIN_PASSWORD` | 管理员密码 | xcook123456 |
-| `JWT_SECRET` | JWT 密钥（留空自动生成） | 自动生成 |
+| 参数               | 说明             | 默认值         |
+| ---------------- | -------------- | ----------- |
+| `-p 3000:3000`   | 端口映射           | 3000:3000   |
+| `ADMIN_PASSWORD` | 管理员密码          | xcook123456 |
+| `JWT_SECRET`     | JWT 密钥（留空自动生成） | 自动生成        |
 
----
+***
 
-### 方式二：Docker 命令部署（本地构建）
+### 方式二：Docker 命令部署（本地构建 - 推荐）
 
 #### 第一步：获取代码
 
@@ -175,14 +180,14 @@ docker run -d \
 
 **参数说明：**
 
-| 参数 | 说明 |
-|------|------|
-| `-p 3000:3000` | 端口映射，格式为 `宿主机端口:容器端口` |
-| `-v xcook-data` | 数据库持久化存储 |
-| `-v xcook-uploads` | 上传文件持久化存储 |
-| `-e JWT_SECRET` | JWT 密钥，建议使用随机字符串 |
-| `-e ADMIN_PASSWORD` | 管理员密码 |
-| `-e CORS_ORIGINS` | 跨域来源（可选，多个用逗号分隔） |
+| 参数                  | 说明                    |
+| ------------------- | --------------------- |
+| `-p 3000:3000`      | 端口映射，格式为 `宿主机端口:容器端口` |
+| `-v xcook-data`     | 数据库持久化存储              |
+| `-v xcook-uploads`  | 上传文件持久化存储             |
+| `-e JWT_SECRET`     | JWT 密钥，建议使用随机字符串      |
+| `-e ADMIN_PASSWORD` | 管理员密码                 |
+| `-e CORS_ORIGINS`   | 跨域来源（可选，多个用逗号分隔）      |
 
 #### 第四步：验证部署
 
@@ -197,7 +202,7 @@ docker logs xcook
 curl http://localhost:3000/health
 ```
 
----
+***
 
 ### 方式三：Docker Compose 部署
 
@@ -242,7 +247,7 @@ docker-compose ps
 curl http://localhost:3000/health
 ```
 
----
+***
 
 ### 自定义端口
 
@@ -269,19 +274,19 @@ docker run -d \
 PORT=3001
 ```
 
----
+***
 
 ### 环境变量说明
 
-| 变量 | 说明 | 必填 | 默认值 |
-|------|------|------|--------|
-| `PORT` | 容器内服务端口 | 否 | 3000 |
-| `JWT_SECRET` | JWT 密钥（建议设置） | 否 | 自动生成 |
-| `ADMIN_PASSWORD` | 管理员密码 | 否 | admin123 |
-| `CORS_ORIGINS` | 允许的跨域来源（逗号分隔） | 否 | 允许所有 |
-| `UPLOAD_DIR` | 上传文件目录 | 否 | /app/server/uploads |
+| 变量               | 说明            | 必填 | 默认值                 |
+| ---------------- | ------------- | -- | ------------------- |
+| `PORT`           | 容器内服务端口       | 否  | 3000                |
+| `JWT_SECRET`     | JWT 密钥（建议设置）  | 否  | 自动生成                |
+| `ADMIN_PASSWORD` | 管理员密码         | 否  | admin123            |
+| `CORS_ORIGINS`   | 允许的跨域来源（逗号分隔） | 否  | 允许所有                |
+| `UPLOAD_DIR`     | 上传文件目录        | 否  | /app/server/uploads |
 
----
+***
 
 ## 📋 常用命令
 
@@ -341,7 +346,7 @@ docker exec -it xcook ls -la /app/server/data/
 docker exec -it xcook ls -la /app/server/uploads/
 ```
 
----
+***
 
 ## 💾 数据备份与恢复
 
@@ -383,7 +388,7 @@ docker run --rm \
 docker restart xcook
 ```
 
----
+***
 
 ## 🔧 高级配置
 
@@ -422,7 +427,7 @@ sudo certbot --nginx -d your-domain.com
 sudo certbot renew --dry-run
 ```
 
----
+***
 
 ## ❓ 常见问题
 
@@ -490,33 +495,35 @@ docker rm -f xcook
 docker run -d --name xcook ... -e ADMIN_PASSWORD=new-password ... xcook:latest
 ```
 
----
+***
 
 ## 📖 主要页面
 
-| 路由 | 说明 |
-|------|------|
-| `/` | 首页 - 菜谱列表 |
-| `/login` | 登录页 |
-| `/register` | 注册页 |
-| `/recipe/new` | 创建菜谱 |
-| `/recipe/:id` | 菜谱详情 |
-| `/recipe/:id/edit` | 编辑菜谱 |
-| `/favorites` | 收藏列表 |
-| `/categories` | 分类管理 |
-| `/daily-menu` | 每日菜单 |
+| 路由                 | 说明             |
+| ------------------ | -------------- |
+| `/`                | 首页 - 菜谱列表      |
+| `/login`           | 登录页            |
+| `/register`        | 注册页            |
+| `/recipe/new`      | 创建菜谱           |
+| `/recipe/:id`      | 菜谱详情           |
+| `/recipe/:id/edit` | 编辑菜谱           |
+| `/favorites`       | 收藏列表           |
+| `/categories`      | 分类管理           |
+| `/daily-menu`      | 每日菜单           |
 | `/admin/nutrition` | 营养数据管理（需管理员权限） |
 
----
+***
 
 ## 🔌 API 接口
 
 ### 认证接口
+
 - `POST /api/auth/register` - 注册
 - `POST /api/auth/login` - 登录
 - `GET /api/auth/me` - 获取当前用户
 
 ### 菜谱接口
+
 - `GET /api/recipes` - 获取菜谱列表
 - `GET /api/recipes/:id` - 获取菜谱详情
 - `POST /api/recipes` - 创建菜谱
@@ -526,16 +533,18 @@ docker run -d --name xcook ... -e ADMIN_PASSWORD=new-password ... xcook:latest
 - `POST /api/recipes/:id/favorite` - 收藏/取消收藏
 
 ### 每日菜单接口
+
 - `GET /api/daily-menu` - 获取每日菜单
 - `POST /api/daily-menu` - 保存每日菜单
 - `DELETE /api/daily-menu` - 删除每日菜单
 
 ### 营养数据接口
+
 - `GET /api/nutrition` - 获取所有食材
 - `GET /api/nutrition/search?q=keyword` - 搜索食材
 - `POST /api/nutrition/admin/login` - 管理员登录
 
----
+***
 
 ## 🔒 安全特性
 
@@ -546,7 +555,7 @@ docker run -d --name xcook ... -e ADMIN_PASSWORD=new-password ... xcook:latest
 - **文件验证** - 魔数验证、路径遍历防护
 - **CORS 配置** - 跨域访问控制
 
----
+***
 
 ## 🛠 开发指南
 
@@ -584,17 +593,19 @@ npm run build    # 编译 TypeScript
 npm start        # 启动生产服务器
 ```
 
----
+***
 
 ## 📝 更新日志
 
 ### v1.2.0
+
 - 🐛 修复 Docker 部署 API 路由问题
 - 🐛 修复局域网 HTTP 访问安全策略问题
 - ✨ 支持自定义端口配置
 - ✨ 优化 Docker 镜像构建
 
 ### v1.1.0
+
 - ✨ 新增每日菜单功能
 - ✨ 新增食材清单汇总
 - 🐛 修复移动端图片裁剪问题
@@ -602,12 +613,13 @@ npm start        # 启动生产服务器
 - 💄 优化营养数据管理页面布局
 
 ### v1.0.0
+
 - 🎉 初始版本发布
 - ✨ 菜谱管理功能
 - ✨ 营养计算功能
 - ✨ 用户认证系统
 
----
+***
 
 ## 🤝 贡献指南
 
@@ -617,16 +629,17 @@ npm start        # 启动生产服务器
 4. 推送到分支 (`git push origin feature/AmazingFeature`)
 5. 提交 Pull Request
 
----
+***
 
 ## 📄 许可证
 
 MIT License
 
----
+***
 
 ## 🙏 致谢
 
 - 营养数据来源：中国食物成分表
 - 图标：Heroicons
 - UI 框架：Tailwind CSS
+
