@@ -72,9 +72,17 @@ xcook/
 ----
 ## 项目预览
 <img width="1718" height="771" alt="Snipaste_2026-03-22_21-52-48" src="https://github.com/user-attachments/assets/78b55949-f9e4-44ab-a78f-e61c1e90bb17" />
-![Uploading Snipaste_2026-03-22_21-53-20.png…]()
 
+<img width="1654" height="1202" alt="Snipaste_2026-03-22_21-53-20" src="https://github.com/user-attachments/assets/96a76852-1f3b-468b-ab6b-3d418bf13cb7" />
+<img width="1781" height="1227" alt="Snipaste_2026-03-22_21-53-31" src="https://github.com/user-attachments/assets/c0476d1d-788f-4b09-9302-429cbf9e38f1" />
+<img width="1674" height="1081" alt="Snipaste_2026-03-22_21-53-42" src="https://github.com/user-attachments/assets/8d0beff1-32ad-412c-bc66-7406e3f8635e" />
+<img width="1722" height="1196" alt="Snipaste_2026-03-22_21-54-02" src="https://github.com/user-attachments/assets/12d82ab8-beaa-44d3-bb14-0f422d4825ec" />
+<img width="970" height="911" alt="Snipaste_2026-03-22_21-54-09" src="https://github.com/user-attachments/assets/5619c67d-6476-4fd2-91c5-eb8c9385a2e3" />
+<img width="1880" height="995" alt="Snipaste_2026-03-22_21-54-19" src="https://github.com/user-attachments/assets/f5e8dd51-3ed8-4f79-90db-2499ee504d1b" />
 
+<img width="1717" height="908" alt="Snipaste_2026-03-22_21-54-24" src="https://github.com/user-attachments/assets/f833e080-6979-4970-b0e0-273a710afed9" />
+
+<img width="516" height="1135" alt="image" src="https://github.com/user-attachments/assets/be5f20e9-8360-4e59-b8f3-6b0fb908c82f" />
 
 ---
 
