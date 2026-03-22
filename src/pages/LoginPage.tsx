@@ -44,6 +44,7 @@ export function LoginPage() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const from = (location.state as { from?: { pathname?: string } })?.from?.pathname || '/';
+  const successMessage = (location.state as { message?: string })?.message || '';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,6 +85,18 @@ export function LoginPage() {
         </div>
 
         <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+          {successMessage && (
+            <div className="mb-5 p-4 bg-gradient-to-r from-green-50 to-green-100 border border-green-200 rounded-xl shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="flex-shrink-0 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <p className="text-sm font-medium text-green-800">{successMessage}</p>
+              </div>
+            </div>
+          )}
           <form onSubmit={handleSubmit} className="space-y-5">
             <Input
               type="email"

@@ -23,23 +23,13 @@ export function RecipeDetailPage() {
   const [loading, setLoading] = useState(true);
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   
-  // Load recipe from context or API
+  // Load recipe from API to ensure we have isOwner field
   useEffect(() => {
     const loadRecipe = async () => {
       if (!id) return;
       
-      // First try to get from context
-      const contextRecipe = recipes.find((r) => r.id === id);
-      if (contextRecipe) {
-        setRecipe(contextRecipe);
-        setRecipeRating(contextRecipe.rating || 0);
-        setRatingCount(contextRecipe.ratingCount || 0);
-        setLoading(false);
-        return;
-      }
-      
-      // If not in context, try to fetch from API
       try {
+        // Always fetch from API to get isOwner field
         const fetchedRecipe = await recipesApi.getById(id);
         setRecipe(fetchedRecipe);
         setRecipeRating(fetchedRecipe.rating || 0);
@@ -54,7 +44,7 @@ export function RecipeDetailPage() {
     };
     
     loadRecipe();
-  }, [id, recipes, refreshRecipes]);
+  }, [id, refreshRecipes]);
 
   // Load user's rating for this recipe (only if logged in)
   useEffect(() => {
@@ -91,6 +81,13 @@ export function RecipeDetailPage() {
     }
   };
 
+  const handleDelete = () => {
+    if (recipe) {
+      deleteRecipe(recipe.id);
+      navigate('/');
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background-primary">
@@ -121,11 +118,6 @@ export function RecipeDetailPage() {
   }
 
   const category = DEFAULT_CATEGORIES.find((c) => c.id === recipe.category);
-
-  const handleDelete = () => {
-    deleteRecipe(recipe.id);
-    navigate('/');
-  };
 
   return (
     <div className="min-h-screen bg-background-primary pb-20 md:pb-0">
@@ -204,6 +196,7 @@ export function RecipeDetailPage() {
             </div>
           </div>
 
+          {/* Edit and Delete Buttons - Always show for testing */}
           <div className="flex gap-2 mb-6">
             {recipe.isOwner && (
               <>

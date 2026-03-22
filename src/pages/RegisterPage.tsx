@@ -36,7 +36,8 @@ export function RegisterPage() {
 
     try {
       await register(email, password, displayName);
-      navigate('/');
+      // 注册成功后跳转到登录页
+      navigate('/login', { state: { message: '注册成功，请登录' } });
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : '注册失败，请稍后重试';
       setError(errorMessage);

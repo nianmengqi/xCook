@@ -2,11 +2,11 @@ version: '3.8'
 
 services:
   xcook:
+    image: ${DOCKER_IMAGE:-xcook/xcook:latest}
+    container_name: xcook
     build:
       context: .
       dockerfile: Dockerfile
-    image: xcook:latest
-    container_name: xcook
     ports:
       - "${PORT:-3000}:3000"
     volumes:
@@ -17,7 +17,7 @@ services:
       - PORT=3000
       - JWT_SECRET=${JWT_SECRET:-}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin123}
-      - CORS_ORIGINS=${CORS_ORIGINS:-}
+      - CORS_ORIGINS=${CORS_ORIGINS:-*}
       - UPLOAD_DIR=/app/server/uploads
     restart: unless-stopped
     healthcheck:

@@ -28,8 +28,8 @@ export function Header({ onMenuClick }: HeaderProps) {
             to="/"
             className={cn(
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
-              location.pathname === '/' 
-                ? 'bg-primary/10 text-primary' 
+              location.pathname === '/'
+                ? 'bg-primary/10 text-primary'
                 : 'text-gray-600 hover:bg-gray-100'
             )}
           >
@@ -39,8 +39,8 @@ export function Header({ onMenuClick }: HeaderProps) {
             to="/categories"
             className={cn(
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
-              location.pathname === '/categories' 
-                ? 'bg-primary/10 text-primary' 
+              location.pathname === '/categories'
+                ? 'bg-primary/10 text-primary'
                 : 'text-gray-600 hover:bg-gray-100'
             )}
           >
@@ -50,8 +50,8 @@ export function Header({ onMenuClick }: HeaderProps) {
             to="/favorites"
             className={cn(
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
-              location.pathname === '/favorites' 
-                ? 'bg-primary/10 text-primary' 
+              location.pathname === '/favorites'
+                ? 'bg-primary/10 text-primary'
                 : 'text-gray-600 hover:bg-gray-100'
             )}
           >
@@ -80,7 +80,17 @@ export function Header({ onMenuClick }: HeaderProps) {
 
           <Link
             to="/daily-menu"
-            className="btn btn-ghost p-2"
+            className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-200 hover:shadow-xl transition-all duration-300"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            每日菜单
+          </Link>
+
+          <Link
+            to="/daily-menu"
+            className="sm:hidden p-2 bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-lg shadow-lg shadow-orange-200 hover:shadow-xl transition-all duration-300"
             title="每日菜单"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

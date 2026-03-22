@@ -76,64 +76,195 @@ xcook/
 ### 环境要求
 
 - Docker 20.10+
-- Docker Compose 2.0+
+- Docker Compose 2.0+（可选）
 
-### 第一步：获取代码
+---
+
+### ⭐ 方式一：Docker Hub 一键部署（推荐）
+
+最简单的方式，无需克隆代码，直接从 Docker Hub 拉取镜像运行：
 
 ```bash
-# 克隆项目
-git clone https://github.com/nianmengqi/xCook.git
-cd xcook
+# 一行命令启动
+docker run -d \
+  --name xcook \
+  -p 3000:3000 \
+  -e ADMIN_PASSWORD=xcook123456 \
+  xcook/xcook:latest
 ```
 
-### 第二步：配置环境变量
-
-创建 `.env` 文件：
+**或使用 Docker Compose：**
 
 ```bash
 # 创建配置文件
+cat > docker-compose.yml << 'EOF'
+version: '3.8'
+services:
+  xcook:
+    image: xcook/xcook:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - ADMIN_PASSWORD=xcook123456
+    volumes:
+      - xcook-data:/app/server/data
+      - xcook-uploads:/app/server/uploads
+    restart: unless-stopped
+volumes:
+  xcook-data:
+  xcook-uploads:
+EOF
+
+# 启动服务
+docker-compose up -d
+```
+
+**部署参数说明：**
+
+| 参数 | 说明 | 默认值 |
+|------|------|--------|
+| `-p 3000:3000` | 端口映射 | 3000:3000 |
+| `ADMIN_PASSWORD` | 管理员密码 | xcook123456 |
+| `JWT_SECRET` | JWT 密钥（留空自动生成） | 自动生成 |
+
+---
+
+### 方式二：Docker 命令部署（本地构建）
+
+#### 第一步：获取代码
+
+```bash
+git clone https://github.com/nianmengqi/xCook.git
+cd xCook
+```
+
+#### 第二步：构建镜像
+
+```bash
+docker build -t xcook:latest .
+```
+
+#### 第三步：启动容器
+
+```bash
+docker run -d \
+  --name xcook \
+  -p 3000:3000 \
+  -v xcook-data:/app/server/data \
+  -v xcook-uploads:/app/server/uploads \
+  -e JWT_SECRET=$(openssl rand -hex 64) \
+  -e ADMIN_PASSWORD=admin123 \
+  --restart unless-stopped \
+  xcook:latest
+```
+
+**参数说明：**
+
+| 参数 | 说明 |
+|------|------|
+| `-p 3000:3000` | 端口映射，格式为 `宿主机端口:容器端口` |
+| `-v xcook-data` | 数据库持久化存储 |
+| `-v xcook-uploads` | 上传文件持久化存储 |
+| `-e JWT_SECRET` | JWT 密钥，建议使用随机字符串 |
+| `-e ADMIN_PASSWORD` | 管理员密码 |
+| `-e CORS_ORIGINS` | 跨域来源（可选，多个用逗号分隔） |
+
+#### 第四步：验证部署
+
+```bash
+# 查看容器状态
+docker ps
+
+# 查看日志
+docker logs xcook
+
+# 健康检查
+curl http://localhost:3000/health
+```
+
+---
+
+### 方式三：Docker Compose 部署
+
+#### 第一步：创建配置文件
+
+```bash
 cat > .env << 'EOF'
-# 管理员密码（用于营养数据管理）
-ADMIN_PASSWORD=your-admin-password
+# 服务端口（宿主机端口）
+PORT=3000
 
-# JWT 密钥（建议设置，否则每次重启用户需重新登录）
-# 可使用以下命令生成：node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
-JWT_SECRET=your-random-secret-key-at-least-64-characters-long
+# JWT 密钥（建议生成随机字符串）
+JWT_SECRET=your-jwt-secret-key
 
-# 允许的跨域来源（多个用逗号分隔，可选）
-CORS_ORIGINS=https://your-domain.com
+# 管理员密码
+ADMIN_PASSWORD=admin123
+
+# 跨域来源（可选，多个用逗号分隔）
+CORS_ORIGINS=
 EOF
 ```
 
-**环境变量说明：**
+生成 JWT 密钥：
+
+```bash
+# 方式一：使用 openssl
+openssl rand -hex 64
+
+# 方式二：使用 node
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+```
+
+#### 第二步：启动服务
+
+```bash
+docker-compose up -d --build
+```
+
+#### 第三步：验证部署
+
+```bash
+docker-compose ps
+curl http://localhost:3000/health
+```
+
+---
+
+### 自定义端口
+
+如果 3000 端口被占用，可以映射到其他端口：
+
+```bash
+# 映射到 3001 端口
+docker run -d \
+  --name xcook \
+  -p 3001:3000 \
+  -v xcook-data:/app/server/data \
+  -v xcook-uploads:/app/server/uploads \
+  -e JWT_SECRET=$(openssl rand -hex 64) \
+  -e ADMIN_PASSWORD=admin123 \
+  --restart unless-stopped \
+  xcook:latest
+
+# 访问地址变为 http://localhost:3001
+```
+
+或修改 `.env` 文件：
+
+```bash
+PORT=3001
+```
+
+---
+
+### 环境变量说明
 
 | 变量 | 说明 | 必填 | 默认值 |
 |------|------|------|--------|
-| `ADMIN_PASSWORD` | 管理员密码（明文） | 否 | `admin123` |
+| `PORT` | 容器内服务端口 | 否 | 3000 |
 | `JWT_SECRET` | JWT 密钥（建议设置） | 否 | 自动生成 |
-| `CORS_ORIGINS` | 允许的跨域来源 | 否 | - |
-
-### 第三步：启动服务
-
-```bash
-# 构建并启动（后台运行）
-docker-compose up -d
-
-# 查看启动日志
-docker-compose logs -f
-```
-
-### 第四步：验证部署
-
-```bash
-# 检查服务状态
-docker-compose ps
-
-# 健康检查
-curl http://localhost:3000/api/health
-```
-
-访问 **http://localhost:3000** 开始使用。
+| `ADMIN_PASSWORD` | 管理员密码 | 否 | admin123 |
+| `CORS_ORIGINS` | 允许的跨域来源（逗号分隔） | 否 | 允许所有 |
+| `UPLOAD_DIR` | 上传文件目录 | 否 | /app/server/uploads |
 
 ---
 
@@ -143,29 +274,43 @@ curl http://localhost:3000/api/health
 
 ```bash
 # 启动服务
-docker-compose up -d
+docker start xcook
 
 # 停止服务
-docker-compose down
+docker stop xcook
 
 # 重启服务
-docker-compose restart
+docker restart xcook
 
 # 查看日志
-docker-compose logs -f
+docker logs -f xcook
 
-# 查看状态
-docker-compose ps
+# 删除容器
+docker rm -f xcook
 ```
 
 ### 更新部署
 
 ```bash
-# 拉取最新代码
-git pull
+# 停止并删除旧容器
+docker stop xcook && docker rm xcook
 
-# 重新构建并启动
-docker-compose up -d --build
+# 拉取最新代码
+git pull origin main
+
+# 重新构建镜像
+docker build -t xcook:latest .
+
+# 启动新容器
+docker run -d \
+  --name xcook \
+  -p 3000:3000 \
+  -v xcook-data:/app/server/data \
+  -v xcook-uploads:/app/server/uploads \
+  -e JWT_SECRET=$(openssl rand -hex 64) \
+  -e ADMIN_PASSWORD=admin123 \
+  --restart unless-stopped \
+  xcook:latest
 ```
 
 ### 进入容器
@@ -174,8 +319,11 @@ docker-compose up -d --build
 # 进入容器终端
 docker exec -it xcook sh
 
-# 查看后端日志
-docker exec -it xcook cat /app/server/logs/app.log
+# 查看数据库文件
+docker exec -it xcook ls -la /app/server/data/
+
+# 查看上传文件
+docker exec -it xcook ls -la /app/server/uploads/
 ```
 
 ---
@@ -186,18 +334,18 @@ docker exec -it xcook cat /app/server/logs/app.log
 
 ```bash
 # 创建备份目录
-mkdir -p backup
+mkdir -p ~/backup
 
 # 备份数据库
 docker run --rm \
   -v xcook-data:/data \
-  -v $(pwd)/backup:/backup \
+  -v ~/backup:/backup \
   alpine tar czf /backup/xcook-data-$(date +%Y%m%d).tar.gz /data
 
 # 备份上传文件
 docker run --rm \
   -v xcook-uploads:/data \
-  -v $(pwd)/backup:/backup \
+  -v ~/backup:/backup \
   alpine tar czf /backup/xcook-uploads-$(date +%Y%m%d).tar.gz /data
 ```
 
@@ -207,32 +355,24 @@ docker run --rm \
 # 恢复数据库
 docker run --rm \
   -v xcook-data:/data \
-  -v $(pwd)/backup:/backup \
+  -v ~/backup:/backup \
   alpine sh -c "cd / && tar xzf /backup/xcook-data-backup.tar.gz"
 
 # 恢复上传文件
 docker run --rm \
   -v xcook-uploads:/data \
-  -v $(pwd)/backup:/backup \
+  -v ~/backup:/backup \
   alpine sh -c "cd / && tar xzf /backup/xcook-uploads-backup.tar.gz"
+
+# 重启容器
+docker restart xcook
 ```
 
 ---
 
 ## 🔧 高级配置
 
-### 自定义端口
-
-修改 `docker-compose.yml`：
-
-```yaml
-services:
-  xcook:
-    ports:
-      - "8080:3000"  # 改为 8080 端口
-```
-
-### 使用外部 Nginx 反向代理
+### 使用 Nginx 反向代理
 
 ```nginx
 server {
@@ -249,8 +389,6 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_cache_bypass $http_upgrade;
-        
-        # 文件上传大小限制
         client_max_body_size 10M;
     }
 }
@@ -267,6 +405,74 @@ sudo certbot --nginx -d your-domain.com
 
 # 自动续期
 sudo certbot renew --dry-run
+```
+
+---
+
+## ❓ 常见问题
+
+### 1. 端口被占用
+
+```bash
+# 查看端口占用
+netstat -tlnp | grep 3000
+
+# 使用其他端口
+docker run -d --name xcook -p 3001:3000 ... xcook:latest
+```
+
+### 2. 容器无法启动
+
+```bash
+# 查看详细日志
+docker logs xcook
+
+# 重新构建
+docker build --no-cache -t xcook:latest .
+```
+
+### 3. 登录注册报错 "is not valid JSON"
+
+确保 API 路由正确，检查容器日志：
+
+```bash
+docker logs xcook
+curl http://localhost:3000/health
+curl http://localhost:3000/api/auth/login -X POST -H "Content-Type: application/json" -d '{"email":"test@test.com","password":"123456"}'
+```
+
+### 4. 局域网无法访问
+
+确保容器绑定到 `0.0.0.0`，并检查防火墙：
+
+```bash
+# 检查容器端口绑定
+docker port xcook
+
+# 开放防火墙端口
+sudo ufw allow 3000
+```
+
+### 5. 数据丢失
+
+确保使用 Docker 数据卷持久化数据：
+
+```bash
+# 查看数据卷
+docker volume ls | grep xcook
+
+# 数据卷位置
+docker volume inspect xcook-data
+docker volume inspect xcook-uploads
+```
+
+### 6. 忘记管理员密码
+
+重新启动容器时设置新密码：
+
+```bash
+docker rm -f xcook
+docker run -d --name xcook ... -e ADMIN_PASSWORD=new-password ... xcook:latest
 ```
 
 ---
@@ -321,7 +527,6 @@ sudo certbot renew --dry-run
 - **JWT 认证** - 安全的用户身份验证
 - **bcrypt 哈希** - 密码加密存储
 - **请求限流** - 防止暴力破解
-- **helmet 中间件** - 安全 HTTP 头
 - **输入验证** - 防止注入攻击
 - **文件验证** - 魔数验证、路径遍历防护
 - **CORS 配置** - 跨域访问控制
@@ -339,7 +544,6 @@ cd server && npm install && cd ..
 
 # 配置环境变量
 cp .env.example .env
-cp server/.env.example server/.env
 
 # 启动后端（终端1）
 cd server && npm run dev
@@ -367,44 +571,13 @@ npm start        # 启动生产服务器
 
 ---
 
-## ❓ 常见问题
-
-### 1. 端口被占用
-
-```bash
-# 查看端口占用
-lsof -i :3000
-
-# 修改 docker-compose.yml 中的端口映射
-```
-
-### 2. 容器无法启动
-
-```bash
-# 查看详细日志
-docker-compose logs xcook
-
-# 重新构建
-docker-compose up -d --build --force-recreate
-```
-
-### 3. 数据丢失
-
-确保使用 Docker 数据卷持久化数据：
-- `xcook-data`: 数据库文件
-- `xcook-uploads`: 上传的图片
-
-### 4. 忘记管理员密码
-
-修改 `.env` 文件中的 `ADMIN_PASSWORD`，然后重启服务：
-
-```bash
-docker-compose restart
-```
-
----
-
 ## 📝 更新日志
+
+### v1.2.0
+- 🐛 修复 Docker 部署 API 路由问题
+- 🐛 修复局域网 HTTP 访问安全策略问题
+- ✨ 支持自定义端口配置
+- ✨ 优化 Docker 镜像构建
 
 ### v1.1.0
 - ✨ 新增每日菜单功能

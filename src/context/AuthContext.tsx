@@ -51,9 +51,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const register = useCallback(async (email: string, password: string, displayName?: string) => {
     setLoading(true);
     try {
-      const result = await authApi.register(email, password, displayName);
-      authApi.setToken(result.token);
-      setUser(result.user);
+      await authApi.register(email, password, displayName);
+      // 注册成功不自动登录，让用户去登录页输入密码
     } finally {
       setLoading(false);
     }
