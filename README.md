@@ -82,7 +82,7 @@ xcook/
 
 ```bash
 # 克隆项目
-git clone https://github.com/your-repo/xcook.git
+git clone https://github.com/nianmengqi/xCook.git
 cd xcook
 ```
 
