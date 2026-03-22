@@ -8,19 +8,20 @@ services:
     image: xcook:latest
     container_name: xcook
     ports:
-      - "3000:3000"
+      - "${PORT:-3000}:3000"
     volumes:
       - xcook-data:/app/server/data
       - xcook-uploads:/app/server/uploads
     environment:
       - NODE_ENV=production
-      - PORT=3001
+      - PORT=3000
       - JWT_SECRET=${JWT_SECRET:-}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin123}
       - CORS_ORIGINS=${CORS_ORIGINS:-}
+      - UPLOAD_DIR=/app/server/uploads
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3001/health"]
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000/health"]
       interval: 30s
       timeout: 10s
       retries: 3

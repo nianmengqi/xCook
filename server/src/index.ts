@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import path from 'path';
 import { initDb } from './db';
 import authRoutes from './routes/auth';
 import recipeRoutes from './routes/recipes';
@@ -13,7 +14,7 @@ import dailyMenuRoutes from './routes/dailyMenu';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = parseInt(process.env.PORT || '3000', 10);
 
 app.set('trust proxy', 1);
 
@@ -53,9 +54,9 @@ app.use(helmet({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-const corsOrigins = process.env.CORS_ORIGINS?.split(',') || ['http://localhost:5173', 'http://localhost:3000'];
+const corsOrigins = process.env.CORS_ORIGINS?.split(',').map(o => o.trim()).filter(Boolean) || [];
 app.use(cors({
-  origin: corsOrigins,
+  origin: corsOrigins.length > 0 ? corsOrigins : true,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -63,7 +64,8 @@ app.use(cors({
 
 app.use(generalLimiter);
 
-app.use('/uploads', express.static(process.env.UPLOAD_DIR || 'uploads'));
+const uploadDir = process.env.UPLOAD_DIR || path.join(__dirname, '../uploads');
+app.use('/uploads', express.static(uploadDir));
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
@@ -83,8 +85,15 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
   });
 });
 
-app.use((req, res) => {
-  res.status(404).json({ error: '接口不存在' });
+const distPath = process.env.STATIC_DIR || path.join(__dirname, '../../dist');
+app.use(express.static(distPath));
+
+app.get('*', (req, res) => {
+  if (!req.path.startsWith('/api') && !req.path.startsWith('/uploads')) {
+    res.sendFile(path.join(distPath, 'index.html'));
+  } else {
+    res.status(404).json({ error: '接口不存在' });
+  }
 });
 
 async function startServer() {
@@ -92,9 +101,10 @@ async function startServer() {
     await initDb();
     console.log('Database initialized');
     
-    app.listen(PORT, () => {
+    app.listen(PORT, '0.0.0.0', () => {
       console.log(`Server running on port ${PORT}`);
       console.log(`API available at http://localhost:${PORT}/api`);
+      console.log(`Static files served from ${distPath}`);
     });
   } catch (error) {
     console.error('Failed to start server:', error);

@@ -40,9 +40,6 @@ FROM node:18-alpine AS production
 
 WORKDIR /app
 
-# 安装 serve 用于托管静态文件
-RUN npm install -g serve
-
 # 复制后端构建产物
 COPY --from=backend-builder /app/server/dist ./server/dist
 COPY --from=backend-builder /app/server/node_modules ./server/node_modules
@@ -52,20 +49,19 @@ COPY --from=backend-builder /app/server/package.json ./server/
 COPY --from=frontend-builder /app/dist ./dist
 
 # 创建数据目录
-RUN mkdir -p /app/server/data /app/server/uploads
+RUN mkdir -p /app/server/data /app/server/uploads /app/server/logs
 
 # 设置环境变量
 ENV NODE_ENV=production
-ENV PORT=3001
+ENV PORT=3000
 
 # 暴露端口
 EXPOSE 3000
 
 # 创建启动脚本
 RUN echo '#!/bin/sh' > /app/start.sh && \
-    echo 'cd /app/server && node dist/index.js &' >> /app/start.sh && \
-    echo 'sleep 2' >> /app/start.sh && \
-    echo 'serve -s /app/dist -l 3000' >> /app/start.sh && \
+    echo 'cd /app/server' >> /app/start.sh && \
+    echo 'node dist/index.js' >> /app/start.sh && \
     chmod +x /app/start.sh
 
 # 启动服务
