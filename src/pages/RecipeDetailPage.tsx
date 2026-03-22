@@ -7,7 +7,7 @@ import { MobileNav } from '../components/layout/MobileNav';
 import { NutritionPanel } from '../components/recipe/NutritionPanel';
 import { Button } from '../components/common/Button';
 import { RatingDisplay, RatingInput } from '../components/common/StarRating';
-import { DIFFICULTY_LABELS, DEFAULT_CATEGORIES } from '../types';
+import { DIFFICULTY_LABELS, DEFAULT_CATEGORIES, Recipe, Ingredient, CookingStep } from '../types';
 import { formatTime } from '../utils';
 import { recipesApi } from '../services/api';
 
