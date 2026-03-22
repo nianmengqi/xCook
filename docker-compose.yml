@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  xcook:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: xcook:latest
+    container_name: xcook
+    ports:
+      - "3000:3000"
+    volumes:
+      - xcook-data:/app/server/data
+      - xcook-uploads:/app/server/uploads
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - JWT_SECRET=${JWT_SECRET:-}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin123}
+      - CORS_ORIGINS=${CORS_ORIGINS:-}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  xcook-data:
+    name: xcook-data
+  xcook-uploads:
+    name: xcook-uploads

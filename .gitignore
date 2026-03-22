@@ -1,0 +1,48 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+server/dist/
+
+# Environment files
+.env
+server/.env
+.env.local
+.env.*.local
+
+# Database
+server/data/*.db
+!server/data/.gitkeep
+
+# Uploads
+server/uploads/*
+!server/uploads/.gitkeep
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Backup
+backup/
+*.bak
+
+# Temp files
+*.tmp
+*.temp
+admin-password.txt
+
+# Deploy packages
+xcook-deploy/
+xcook-deploy.zip

@@ -1,0 +1,55 @@
+# Dependencies
+node_modules/
+server/node_modules/
+
+# Build outputs (will be rebuilt in Docker)
+dist/
+server/dist/
+
+# Development files
+*.log
+.env
+.env.local
+.env.*.local
+server/.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test files
+coverage/
+*.test.ts
+*.spec.ts
+
+# Documentation
+*.md
+!README.md
+
+# Git
+.git/
+.gitignore
+
+# Docker (prevent recursive builds)
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Backup files
+backup/
+*.bak
+*.backup
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Admin password file (should not be in image)
+admin-password.txt
