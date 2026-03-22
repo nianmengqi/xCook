@@ -72,6 +72,7 @@ xcook/
 ----
 ## 项目预览
 <img width="1718" height="771" alt="Snipaste_2026-03-22_21-52-48" src="https://github.com/user-attachments/assets/78b55949-f9e4-44ab-a78f-e61c1e90bb17" />
+![Uploading Snipaste_2026-03-22_21-53-20.png…]()
 
 
 
