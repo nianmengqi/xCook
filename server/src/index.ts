@@ -35,20 +35,12 @@ const authLimiter = rateLimit({
   skipSuccessfulRequests: true,
 });
 
+// 放宽安全策略以支持局域网 HTTP 访问
 app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'", 'data:', 'blob:', 'https:'],
-      scriptSrc: ["'self'"],
-      connectSrc: ["'self'"],
-      fontSrc: ["'self'"],
-      objectSrc: ["'none'"],
-      upgradeInsecureRequests: [],
-    },
-  },
+  contentSecurityPolicy: false,
   crossOriginEmbedderPolicy: false,
+  crossOriginOpenerPolicy: false,
+  crossOriginResourcePolicy: false,
 }));
 
 app.use(express.json({ limit: '10mb' }));
